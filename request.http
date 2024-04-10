@@ -1,0 +1,23 @@
+@host = https://products-dasw.onrender.com
+@expediente = 744857
+
+###
+POST {{host}}/api/products
+Content-Type: application/json
+x-expediente: 744857
+x-auth: admin
+
+{
+    "name": "Jag",
+    "description": "Combination monkey and nut wrench, with a brown taped grip and a distinct curved upper jaw",
+    "pricePerUnit": 400,
+    "stock": 100,
+    "category": "melee",
+    "imageUrl": "https://community.akamai.steamstatic.com/economy/image/fWFc82js0fmoRAP-qOIPu5THSWqfSmTELLqcUywGkijVjZULUrsm1j-9xgEIUw0QWiTuuSpEjYbgDKTUUbRRnY0zvJENjjJpkwUtZ7O2Mm5kcVaSUPJfDqNjpVC1XXBjptdtUw5AXZ6j/360fx360f",
+    "unit": "pieces"
+}
+
+###
+GET  {{host}}/api/products
+x-expediente:{{expediente}}
+x-auth: admin
