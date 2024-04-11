@@ -188,9 +188,12 @@ async function updateAmount(uuid){
     let prods = JSON.parse(sessionStorage.getItem('products'));
     console.log(prods);
     let prodData = prods.find(p => p.uuid == uuid);
+
+
     if(amount > prodData.stock || amount <= 0 || isNaN(amount)){
         swal("Bad stock!", "", "error");
-        return;
+        loadCartData();
+        throw new Error("Invalid amount");
     }
 
     let body = {amount}
