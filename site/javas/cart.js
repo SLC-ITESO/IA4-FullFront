@@ -13,17 +13,15 @@ async function loadCartData(){
             }
         })
         console.log(resp.status);
-        let data = await resp.json();
+        const data = await resp.json();
         console.log(data);
         console.log(data.cart);
         sessionStorage.setItem('cart', JSON.stringify(data.cart))
 
         cartArray = data;
+        showCartData(cartArray);
     }
 }
-document.addEventListener('DOMContentLoaded', function () {
-    showCartData(cartArray);
-});
 
 async function showCartData(cartArray){
     let cart = JSON.parse(sessionStorage.getItem('cart'));
@@ -59,10 +57,11 @@ async function showCartData(cartArray){
                         </label>
                         <button class="btn btn-sm btn-outline-secondary edit-btn"><i class="fas fa-pencil-alt"></i></button>
                         <button class="btn btn-sm btn-outline-danger cancel-btn" style="display: none;"><i class="bi bi-x-lg"></i></button>
-                        <button class="btn btn-sm btn-outline-success confirm-btn" style="display: none;"><i class="fas fa-check"></i></button>
+                        <button class="btn btn-sm btn-outline-success confirm-btn" style="display: none;" 
+                        ><i class="fas fa-check"></i></button>
                     </td>
                     <td>
-                        <button class="btn btn-sm btn-outline-danger delete-icon-btn"><i class="fas fa-trash-alt"></i></button>
+                        <button class="btn btn-sm btn-outline-danger delete-icon-btn" onclick="deleteItem('${c.product.uuid}')"><i class="fas fa-trash-alt"></i></button>
                     </td>
                 </tr>
     `).join("");
@@ -137,3 +136,39 @@ function addEditButtonList(){
     })
 }
 
+function deleteItem(uuid){
+    let prods = JSON.parse(sessionStorage.getItem('products'));
+    let prodData = prods.find(p => p.uuid == uuid);
+    swal({
+        title: "Are you sure?",
+        text: prodData.name + " will be removed",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+    })
+        .then(async (willDelete) => {
+            if (willDelete) {
+                await confirmDelete(prodData.uuid)
+            } else {
+                swal("The product is safe!");
+            }
+        });
+}
+
+async function confirmDelete(uuid){
+    link = 'https://products-dasw.onrender.com/api/cart/'+uuid;
+    let user = sessionStorage.getItem('user')
+    let resp = await fetch(link,{
+        method : 'DELETE',
+        headers:{
+            'x-expediente': '744857',
+            'x-user': user
+        }
+    }).then(
+        swal("Product deleted", "" , "success")
+    ).catch(err => {
+        swal("Error deleting product", err, "error");
+    })
+
+    loadCartData();
+}

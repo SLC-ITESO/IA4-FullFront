@@ -64,7 +64,7 @@ async function confirmAdd(uuid){
     let prods = JSON.parse(sessionStorage.getItem('products'));
     let prodData = prods.find(p => p.uuid == uuid);
 
-    amount = document.getElementById('quantity').value;
+    amount = parseInt(document.getElementById('quantity').value);
     console.log(amount);
     if(amount > prodData.stock || amount <= 0){
         swal("Bad stock!", "", "error");
@@ -80,9 +80,7 @@ async function confirmAdd(uuid){
             'x-expediente': '744857',
             'x-user': user
         },
-        body: {
-            'amount': amount
-        }
+        body: amount
     }).catch(err => {
         swal("Error adding product to cart", err, "error");
     });
