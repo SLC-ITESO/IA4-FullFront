@@ -66,7 +66,7 @@ async function confirmAdd(uuid){
 
     amount = parseInt(document.getElementById('quantity').value);
     console.log(amount);
-    if(amount > prodData.stock || amount <= 0){
+    if(amount > prodData.stock || amount <= 0 || isNaN(amount)){
         swal("Bad stock!", "", "error");
         return;
     }

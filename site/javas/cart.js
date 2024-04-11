@@ -192,4 +192,6 @@ async function updateAmount(uuid){
         }
     }).then(
         swal("Product Updated", "" , "success"))
+
+    loadCartData();
 }
