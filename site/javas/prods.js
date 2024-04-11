@@ -60,17 +60,32 @@ function addCart(uuid){
     modal.show();
 }
 
- function confirmAdd(uuid){
+async function confirmAdd(uuid){
     let prods = JSON.parse(sessionStorage.getItem('products'));
     let prodData = prods.find(p => p.uuid == uuid);
 
     amount = document.getElementById('quantity').value;
+    console.log(amount);
     if(amount > prodData.stock || amount <= 0){
         swal("Bad stock!", "", "error");
         return;
     }
+    let user = sessionStorage.getItem('user')
 
-    // Show the modal
-    let modal = new bootstrap.Modal(document.getElementById('preCartModal'), {});
-    modal.show();
+    let link = 'https://products-dasw.onrender.com/api/cart/'+prodData.uuid;
+
+    let resp = await fetch(link,{
+        method : 'POST',
+        headers:{
+            'x-expediente': '744857',
+            'x-user': user
+        },
+        body: {
+            'amount': amount
+        }
+    }).catch(err => {
+        swal("Error adding product to cart", err, "error");
+    });
+
+    swal("Product added successfully!", "", "success");
 }
