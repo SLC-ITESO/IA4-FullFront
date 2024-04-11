@@ -53,11 +53,11 @@ async function showCartData(cartArray){
                     </td>
                     <td>
                         <label>
-                            <input type="number" class="form-control quantity-input" value="${c.amount}" disabled>
+                            <input type="number" class="form-control quantity-input" id="cartAmnt" value="${c.amount}" disabled>
                         </label>
                         <button class="btn btn-sm btn-outline-secondary edit-btn"><i class="fas fa-pencil-alt"></i></button>
                         <button class="btn btn-sm btn-outline-danger cancel-btn" style="display: none;"><i class="bi bi-x-lg"></i></button>
-                        <button class="btn btn-sm btn-outline-success confirm-btn" style="display: none;" 
+                        <button class="btn btn-sm btn-outline-success confirm-btn" onclick="updateAmount('${c.product.uuid}')" style="display: none;" 
                         ><i class="fas fa-check"></i></button>
                     </td>
                     <td>
@@ -171,4 +171,25 @@ async function confirmDelete(uuid){
     })
 
     loadCartData();
+}
+
+async function updateAmount(uuid){
+    console.log('updating amount')
+    link = 'https://products-dasw.onrender.com/api/cart/'+uuid;
+    let user = sessionStorage.getItem('user')
+
+    let newAmount = document.getElementById('cartAmnt').value;
+    newAmount = parseFloat(newAmount);
+
+    await fetch(link,{
+        method : 'POST',
+        headers:{
+            'x-expediente': '744857',
+            'x-user': user
+        },
+        body: {
+            'amount': newAmount
+        }
+    }).then(
+        swal("Product Updated", "" , "success"))
 }
