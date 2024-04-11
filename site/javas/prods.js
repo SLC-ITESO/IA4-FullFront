@@ -70,20 +70,25 @@ async function confirmAdd(uuid){
         swal("Bad stock!", "", "error");
         return;
     }
-    let user = sessionStorage.getItem('user')
-
+    let user = sessionStorage.getItem('user');
     let link = 'https://products-dasw.onrender.com/api/cart/'+prodData.uuid;
+
+    let body = {amount};
 
     let resp = await fetch(link,{
         method : 'POST',
         headers:{
             'x-expediente': '744857',
-            'x-user': user
+            'x-user': user,
+            'Content-type':'Application/json'
         },
-        body: amount
+        body: JSON.stringify(body)
+
     }).catch(err => {
         swal("Error adding product to cart", err, "error");
+        return;
     });
-
-    swal("Product added successfully!", "", "success");
+    let data = await resp.json();
+    console.log(data);
+    swal("Product added to cart", "", "success");
 }

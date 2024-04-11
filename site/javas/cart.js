@@ -43,7 +43,7 @@ async function showCartData(cartArray){
     `;
 
     html += cart.map((c) => /*html*/ `
-                <tr>
+                <tr uuidRow="${c.product.uuid}">
                     <td>
                         <img src="${c.product.imageUrl}" alt="${c.product.name} Image" class="item-img">
                         <label class="product-name">${c.product.name}</label>
@@ -178,20 +178,36 @@ async function updateAmount(uuid){
     link = 'https://products-dasw.onrender.com/api/cart/'+uuid;
     let user = sessionStorage.getItem('user')
 
-    let newAmount = document.getElementById('cartAmnt').value;
-    newAmount = parseFloat(newAmount);
+    let newAmountInput = document.querySelector(`tr[uuidRow="${uuid}"] .quantity-input`);
+    let newAmount = newAmountInput.value;
+    console.log("NEW AMOUNT" + newAmount);
+    let amount = parseInt(newAmount);
+    console.log("AMOUNT: "+amount);
 
-    await fetch(link,{
+    //verificamos que no se pase de stock
+    let prods = JSON.parse(sessionStorage.getItem('products'));
+    console.log(prods);
+    let prodData = prods.find(p => p.uuid == uuid);
+    if(amount > prodData.stock || amount <= 0 || isNaN(amount)){
+        swal("Bad stock!", "", "error");
+        return;
+    }
+
+    let body = {amount}
+    let resp = await fetch(link,{
         method : 'POST',
         headers:{
+            'Content-type':'Application/json',
             'x-expediente': '744857',
             'x-user': user
         },
-        body: {
-            'amount': newAmount
-        }
+        body: JSON.stringify(body)
+
     }).then(
         swal("Product Updated", "" , "success"))
+    let data = await resp.json();
+    console.log(data);
 
     loadCartData();
 }
+
