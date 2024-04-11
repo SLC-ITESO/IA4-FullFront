@@ -48,7 +48,6 @@
     </style>
 </head>
 <body>
-<!-- Modal -->
 <div class="modal fade" id="ModalLogin">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -62,18 +61,14 @@
                     <div class="input-group mb-3">
                         <input type="text" class="form-control" placeholder="Email" id="emailLogin" required>
                         <span class="input-group-text">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor">
-                                <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"/>
-                            </svg>
+                            <i class="bi bi-person"></i>
                         </span>
                     </div>
                     <label for="passwordLogIn">Password</label>
                     <div class="input-group mb-3">
                         <input type="password" class="form-control" placeholder="Password" id="passwordLogIn" required>
                         <span class="input-group-text">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor">
-                                <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2m3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2M5 8h6a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1"/>
-                            </svg>
+                            <i class="bi bi-lock"></i>
                         </span>
                     </div>
                     <div class="form-check">
@@ -83,7 +78,7 @@
                         </label>
                     </div>
                     <div style="text-align: center;">
-                        <button type="submit" class="btn btn-primary">Login</button>
+                        <button type="button" class="btn btn-primary" id="loginButton">Login</button>
                     </div>
                 </form>
             </div>
@@ -94,6 +89,7 @@
         </div>
     </div>
 </div>
+
 
 <div class="modal fade" id="modalSignUp">
     <div class="modal-dialog modal-dialog-centered">
@@ -168,18 +164,14 @@
                 <ul class="navbar-nav me-auto mb-2 mb-lg-1">
                     <li>
                         <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#ModalLogin">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
-                                <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
-                                <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
-                            </svg>
+                            <i class="bi bi-person-bounding-box"></i>
                             LOGIN
                         </a>
                     </li>
                     <li>
-                        <a class="nav-link" href="P01_cart.html">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart-fill" viewBox="0 0 16 16">
-                                <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2"/>
-                            </svg>
+                        <a class="nav-link" href="cart.html">
+                            <i class="bi bi-truck"></i>
+                            CART
                         </a>
                     </li>
                 </ul>
@@ -202,7 +194,23 @@
     I bet you'd love to know all the intricate details of how the Mann Co. Store works. Well, that makes one of us, because I don't. In fact, thinking about it just now made my brain invent something vastly more interesting in defense. And while you're doing that, remind yourself periodically that I'm about to spend roughly the same period of time parachute-boxing.<br><br>
 </p>
 <img src="http://www.teamfortress.com/images/posts/saxletter03.jpg">
+
+<!-- login thingy -->
+<script>
+    document.getElementById('loginButton').addEventListener('click', function() {
+        // Get the value from the email input
+        let email = document.getElementById('emailLogin').value;
+
+        // Store the email in sessionStorage
+        sessionStorage.setItem('user', email);
+
+        //let sEmail = sessionStorage.getItem('user');
+        //console.log('Stored email:', sEmail);
+    });
+</script>
+
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+
 </body>
 </html>

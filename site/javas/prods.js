@@ -54,12 +54,23 @@ function addCart(uuid){
     document.getElementById('modalItemImage').src = prodData.imageUrl;
     document.getElementById('modalItemName').textContent = prodData.name;
     document.getElementById('modalItemPrice').textContent = '$' + prodData.pricePerUnit;
-
+    document.getElementById('addCartButton').setAttribute('onclick', `confirmAdd('${prodData.uuid}')`);
     // Show the modal
     let modal = new bootstrap.Modal(document.getElementById('preCartModal'), {});
     modal.show();
 }
 
-function confirmAdd(){
+ function confirmAdd(uuid){
+    let prods = JSON.parse(sessionStorage.getItem('products'));
+    let prodData = prods.find(p => p.uuid == uuid);
 
+    amount = document.getElementById('quantity').value;
+    if(amount > prodData.stock || amount <= 0){
+        swal("Bad stock!", "", "error");
+        return;
+    }
+
+    // Show the modal
+    let modal = new bootstrap.Modal(document.getElementById('preCartModal'), {});
+    modal.show();
 }
