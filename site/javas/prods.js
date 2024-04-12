@@ -23,7 +23,7 @@ async function loadData(){
 
 function showCardsData(prodsArray) {
     let html = /*html*/ `
-    <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-4">
+    <div id ="cardz" class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-4">
     ${prodsArray
         .map((prod) => /*html*/ `
         <div class="col">

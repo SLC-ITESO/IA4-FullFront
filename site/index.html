@@ -154,10 +154,10 @@
                     </ul>
                 </li>
                 <li>
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" id="seachInput">
                 </li>
                 <li>
-                    <button class="btn btn-outline-success" type="submit">Search</button>
+                    <button class="btn btn-outline-success" type="submit" id="searchButton">Search</button>
                 </li>
             </ul>
             <form class="d-flex">
@@ -239,6 +239,43 @@
 <!-- scripts -->
 
 <script src="./javas/prods.js"></script>
+<script>
+    document.getElementById('searchButton').addEventListener('click', function() {
+        console.log('searching');
+            let searchTerm = document.getElementById("seachInput").value;
+            console.log(searchTerm);
+            if(searchTerm){
+                console.log(searchTerm);
+                let cards = document.querySelectorAll("#cardz .col");
+                let prods = JSON.parse(sessionStorage.getItem('products'));
+                let found = false;
+                prods.forEach(function (prods) {
+                    let name = prods.name
+                    if (name.toLowerCase().indexOf(searchTerm) != -1){
+                        cards.forEach(function (card) {
+                            let cardName = card.querySelector(".card-title").textContent.toLowerCase();
+                            if (cardName.indexOf(searchTerm) != -1) {
+                                found = true;
+                                card.style.display = "block";
+                            } else {
+                                card.style.display = "none";
+                            }
+                        });
+                    }
+                    if(!found){
+                        swal("No products found", "", "error");
+                    }
+                });
+            }
+            else{
+                loadData()
+            }
+    })
+</script>
+<script>
+
+</script>
+
 <script>
     loadData()
     console.log("test");
