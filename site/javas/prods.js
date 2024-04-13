@@ -1,10 +1,3 @@
-let prodsArray = [];
-
-//fetches the data from the server https://products-dasw.onrender.com and stores it in the prodsArray, it has a
-//header with:
-// x-expediente: 744857
-// x-auth: admin
-
 async function loadData(){
     let resp = await fetch('https://products-dasw.onrender.com/api/products',{
         method : 'GET',
@@ -17,33 +10,62 @@ async function loadData(){
     let data = await resp.json();
     console.log(data);
     sessionStorage.setItem('products', JSON.stringify(data))
-    prodsArray=data;
     updateCategories(data)
-    showCardsData(data)
+    paginateData(data)
+    //showCardsData(data)
+
+}
+function loadSeachedData(){
+
+}
+function paginateData(data){
+    let itemPerPage = 4;
+    let numPages = Math.ceil(data.length/itemPerPage);
+    let paginatedData = [];
+    for(let i = 0; i < numPages; i++){
+        paginatedData.push(data.slice(i*itemPerPage, (i+1)*itemPerPage));
+    }
+    let l = paginatedData.length;
+    console.log(paginatedData);
+    sessionStorage.setItem('products', JSON.stringify(paginatedData.flat()))
+    addbuttons(l)
+    //showCardsData(paginatedData[0]);
+    showPagCardsData(1)
 }
 
-function updateCategories(data){
-    let categories = data.map(prod => prod.category);
-    //Investigando en stack overflow, se encontro la manera de eliminar
-    //los duplicados de un array, se utiliza el new Set y se convierte
-    //nuevamente a un array, los tres puntos son para
-    //que el array no se convierta en un array de arrays
-
-    categories = [...new Set(categories)];
-    //console.log("CATEGORIES")
-    console.log(categories)
-    document.querySelector('#dropdownCat').innerHTML =
-        categories.map((c) => `
-    <li><a class="dropdown-item" onclick="asignaTipo('${c}')" href="categ.html">${c}</a></li>
-    <li><hr class="dropdown-divider"></li>
-    `).join("");
+function addbuttons(l) {
+    //again, investigating more in stack overflow, I found the
+    // way of integrated a for in a string
+    let html = /*html*/ `
+    ${Array.from({length: l}, (_, i) => i).map((i) => /*html*/ `
+        <li class="page-item"><a class="page-link" onclick="showPagCardsData('${i+1}')">${i+1}</a></li>
+    `).join("")}`;
+    document.querySelector('#paginas').innerHTML = html;
 }
 
-function asignaTipo(categoria){
-    console.log(categoria);
-    console.log(typeof(categoria));
-    sessionStorage.setItem('categoria', categoria);
+function showPagCardsData(pageNum){
+    let prods = JSON.parse(sessionStorage.getItem('products'));
+    let itemPerPage = 4;
+    let paginatedData = prods.slice((pageNum-1)*itemPerPage, pageNum*itemPerPage);
+    showCardsData(paginatedData);
+
 }
+
+document.getElementById('searchButton').addEventListener('click', function() {
+    console.log('searching');
+    let searchTerm = document.getElementById("seachInput").value;
+    console.log(searchTerm);
+    if(searchTerm){
+        let prods = JSON.parse(sessionStorage.getItem('products'));
+        let filteredProds = prods.filter(prod => prod.name.toLowerCase().includes(searchTerm.toLowerCase()));
+        console.log("FILTERED PRODS");
+        console.log(filteredProds);
+        paginateData(filteredProds, true);
+    }
+    else{
+        loadData()
+    }
+})
 
 function showCardsData(prodsArray) {
     let html = /*html*/ `
@@ -67,6 +89,29 @@ function showCardsData(prodsArray) {
     `).join("")}`;
 
     document.querySelector('#product_html').innerHTML = html;
+}
+
+function updateCategories(data){
+    let categories = data.map(prod => prod.category);
+    //Investigando en stack overflow, se encontro la manera de eliminar
+    //los duplicados de un array, se utiliza el new Set y se convierte
+    //nuevamente a un array, los tres puntos son para
+    //que el array no se convierta en un array de arrays
+
+    categories = [...new Set(categories)];
+    //console.log("CATEGORIES")
+    console.log(categories)
+    document.querySelector('#dropdownCat').innerHTML =
+        categories.map((c) => `
+    <li><a class="dropdown-item" onclick="asignaTipo('${c}')" href="categ.html">${c}</a></li>
+    <li><hr class="dropdown-divider"></li>
+    `).join("");
+}
+
+function asignaTipo(categoria){
+    console.log(categoria);
+    console.log(typeof(categoria));
+    sessionStorage.setItem('categoria', categoria);
 }
 
 function addCart(uuid){

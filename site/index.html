@@ -144,18 +144,14 @@
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         PRODUCTS
                     </a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown" id="dropdownCat">
-
-
-
-
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown" id="dropdownCat">
                     </ul>
                 </li>
                 <li>
                     <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" id="seachInput">
                 </li>
                 <li>
-                    <button class="btn btn-outline-success" type="submit" id="searchButton">Search</button>
+                    <button class="btn btn-outline-success" type="submit" id="searchButton">Search by Name</button>
                 </li>
             </ul>
             <form class="d-flex">
@@ -202,6 +198,16 @@
         <!-- Add more col divs for additional cards -->
 </div>
 
+<!-- pagination -->
+
+<nav aria-label="Page navigation example">
+    <ul class="pagination" id="paginas">
+        <li class="page-item active"><a class="page-link" href="#">1</a></li>
+
+        <li class="page-item"><a class="page-link" href="#">3</a></li>
+    </ul>
+</nav>
+
 
 <!-- MODAL PRECART -->
 <div class="modal fade" id="preCartModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" role="dialog" aria-labelledby="modalTitleId" aria-hidden="true">
@@ -238,42 +244,11 @@
 
 <script src="./javas/prods.js"></script>
 <script>
-    document.getElementById('searchButton').addEventListener('click', function() {
-        console.log('searching');
-            let searchTerm = document.getElementById("seachInput").value;
-            console.log(searchTerm);
-            if(searchTerm){
-                console.log(searchTerm);
-                let cards = document.querySelectorAll("#cardz .col");
-                let prods = JSON.parse(sessionStorage.getItem('products'));
-                let found = false;
-                prods.forEach(function (prods) {
-                    let name = prods.name
-                    if (name.toLowerCase().indexOf(searchTerm) != -1){
-                        cards.forEach(function (card) {
-                            let cardName = card.querySelector(".card-title").textContent.toLowerCase();
-                            if (cardName.indexOf(searchTerm) != -1) {
-                                found = true;
-                                card.style.display = "block";
-                            } else {
-                                card.style.display = "none";
-                            }
-                        });
-                    }
-                });
-            }
-            else{
-                loadData()
-            }
-    })
-</script>
-<script>
 
 </script>
 
 <script>
     loadData()
-    console.log("test");
 </script>
 <!-- login thingy -->
 <script>

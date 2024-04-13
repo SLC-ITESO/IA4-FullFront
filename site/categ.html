@@ -188,9 +188,22 @@
     </div>
 </div>
 
+<!-- login thingy -->
+<script>
+    document.getElementById('loginButton').addEventListener('click', function() {
+        // Get the value from the email input
+        let email = document.getElementById('emailLogin').value;
 
+        // Store the email in sessionStorage
+        sessionStorage.setItem('user', email);
+        swal("Login Succesful!", "", "success");
 
+        loadCartData()
 
+        //let sEmail = sessionStorage.getItem('user');
+        //console.log('Stored email:', sEmail);
+    });
+</script>
 
 <script src="./javas/categories.js"></script>
 <script src="./javas/prods.js"></script>
