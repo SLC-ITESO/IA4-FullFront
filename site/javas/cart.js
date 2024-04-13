@@ -12,10 +12,10 @@ async function loadCartData(){
                 'x-user': user
             }
         })
-        console.log(resp.status);
+        //console.log(resp.status);
         const data = await resp.json();
-        console.log(data);
-        console.log(data.cart);
+        //console.log(data);
+        //console.log(data.cart);
         sessionStorage.setItem('cart', JSON.stringify(data.cart))
 
         cartArray = data;
@@ -174,23 +174,23 @@ async function confirmDelete(uuid){
 }
 
 async function updateAmount(uuid){
-    console.log('updating amount')
+    //console.log('updating amount')
     link = 'https://products-dasw.onrender.com/api/cart/'+uuid;
     let user = sessionStorage.getItem('user')
 
     let newAmountInput = document.querySelector(`tr[uuidRow="${uuid}"] .quantity-input`);
     let newAmount = newAmountInput.value;
-    console.log("NEW AMOUNT" + newAmount);
+    //console.log("NEW AMOUNT" + newAmount);
     let amount = parseInt(newAmount);
-    console.log("AMOUNT: "+amount);
+    //console.log("AMOUNT: "+amount);
 
     //verificamos que no se pase de stock
     let prods = JSON.parse(sessionStorage.getItem('products'));
-    console.log(prods);
+    //console.log(prods);
     let prodData = prods.find(p => p.uuid == uuid);
 
     if (amount == 0){
-        console.log('confirm delete');
+        //console.log('confirm delete');
         deleteItem(uuid);
         return;
     }
@@ -214,7 +214,7 @@ async function updateAmount(uuid){
     }).then(
         swal("Product Updated", "" , "success"))
     let data = await resp.json();
-    console.log(data);
+    //console.log(data);
 
     loadCartData();
 }

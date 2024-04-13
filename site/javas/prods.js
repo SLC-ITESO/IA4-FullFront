@@ -6,9 +6,9 @@ async function loadData(){
             'x-auth': 'admin'
         }
     })
-    console.log(resp.status);
+    //console.log(resp.status);
     let data = await resp.json();
-    console.log(data);
+    //console.log(data);
     sessionStorage.setItem('products', JSON.stringify(data))
     updateCategories(data)
     paginateData(data)
@@ -23,7 +23,7 @@ function paginateData(data){
         paginatedData.push(data.slice(i*itemPerPage, (i+1)*itemPerPage));
     }
     let l = paginatedData.length;
-    console.log(paginatedData);
+    //console.log(paginatedData);
     sessionStorage.setItem('products', JSON.stringify(paginatedData.flat()))
     addbuttons(l)
     //showCardsData(paginatedData[0]);
@@ -49,15 +49,15 @@ function showPagCardsData(pageNum){
 }
 
 document.getElementById('searchButton').addEventListener('click', function() {
-    console.log('searching');
+    //console.log('searching');
     let searchTerm = document.getElementById("seachInput").value;
-    console.log(searchTerm);
+    //console.log(searchTerm);
     if(searchTerm){
         let prods = JSON.parse(sessionStorage.getItem('products'));
 
         let filteredProds = prods.filter(prod => prod.name.toLowerCase().includes(searchTerm.toLowerCase()));
-        console.log("FILTERED PRODS");
-        console.log(filteredProds);
+        //console.log("FILTERED PRODS");
+        //console.log(filteredProds);
         if(filteredProds.length == 0){
             swal("No products found!", "", "error");
             return;
@@ -102,7 +102,7 @@ function updateCategories(data){
 
     categories = [...new Set(categories)];
     //console.log("CATEGORIES")
-    console.log(categories)
+    //console.log(categories)
     document.querySelector('#dropdownCat').innerHTML =
         categories.map((c) => `
     <li><a class="dropdown-item" onclick="asignaTipo('${c}')" href="categ.html">${c}</a></li>
@@ -111,16 +111,20 @@ function updateCategories(data){
 }
 
 function asignaTipo(categoria){
-    console.log(categoria);
-    console.log(typeof(categoria));
+    //console.log(categoria);
+    //console.log(typeof(categoria));
     sessionStorage.setItem('categoria', categoria);
 }
 
 function addCart(uuid){
-    console.log("ENTROOOOO")
+    //console.log("ENTROOOOO")
+    if(sessionStorage.getItem('user') == null){
+        swal("You must be logged in to add products to the cart", "", "warning");
+        return;
+    }
     let prods = JSON.parse(sessionStorage.getItem('products'));
     let prodData = prods.find(p => p.uuid == uuid);
-    console.log(prodData);
+    //console.log(prodData);
 
     document.getElementById('modalItemImage').src = prodData.imageUrl;
     document.getElementById('modalItemName').textContent = prodData.name;
@@ -136,7 +140,7 @@ async function confirmAdd(uuid){
     let prodData = prods.find(p => p.uuid == uuid);
 
     amount = parseInt(document.getElementById('quantity').value);
-    console.log(amount);
+    //console.log(amount);
     if(amount > prodData.stock || amount <= 0 || isNaN(amount)){
         swal("Bad stock!", "", "error");
         return;
@@ -160,6 +164,6 @@ async function confirmAdd(uuid){
         return;
     });
     let data = await resp.json();
-    console.log(data);
+    //console.log(data);
     swal("Product added to cart", "", "success");
 }

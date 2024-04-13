@@ -1,7 +1,7 @@
 async function showProductAdminTable(){
     console.log("renderiza tabla")
     let prods = JSON.parse(sessionStorage.getItem('products'));
-    console.log(prods);
+    //console.log(prods);
     //gets all the keys from products
     //let keys = Object.keys(prods[0]);
     //console.log(keys);
@@ -53,7 +53,7 @@ async function confirmItemAdd(){
         category: document.getElementById('addCat').value,
         unit: document.getElementById('addUnit').value
     }
-    console.log(newProd)
+    //console.log(newProd)
 
     let link = 'https://products-dasw.onrender.com/api/products';
     let resp = await fetch(link,{
@@ -69,8 +69,8 @@ async function confirmItemAdd(){
         swal("Error adding the product!", err, "error");
     });
     let data = await resp.json();
-    console.log("DATA")
-    console.log(data)
+    //console.log("DATA")
+    //console.log(data)
     swal("Product Added", "" , "success");
     //add the new product to the array
     let prods = JSON.parse(sessionStorage.getItem('products'));
@@ -111,8 +111,8 @@ async function confirmEdit(uuid){
 
     });
     let data = await resp.json();
-    console.log("DATA")
-    console.log(data)
+    //console.log("DATA")
+    //console.log(data)
     swal("Product Updated", "" , "success");
     //put the new data in the products array
     let index = prods.indexOf(prodData);
@@ -172,9 +172,9 @@ async function filterByQueries(){
     if(filter == ''){
         filter = '.*';
     }
-    console.log(filter);
-    console.log(minPPU);
-    console.log(maxPPU);
+    //console.log(filter);
+    //console.log(minPPU);
+    //console.log(maxPPU);
 
     let filtered = prods.filter(p => p.name.match(filter) && p.pricePerUnit >= minPPU && p.pricePerUnit <= maxPPU);
 

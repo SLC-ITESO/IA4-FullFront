@@ -6,22 +6,22 @@ async function loadCategData(){
             'x-auth': 'admin'
         }
     })
-    console.log(resp.status);
+    //console.log(resp.status);
     let data = await resp.json();
-    console.log(data);
+    //console.log(data);
 
     showCategCardsData(data)
 }
 function showCategCardsData(prodsArray) {
     let category = sessionStorage.getItem('categoria');
-    console.log(category);
+    //console.log(category);
 
     //filtra los productos que coincidan con la categoria seleccionada
     prodsArray = prodsArray.filter(prod => prod.category == category)
-    console.log("PRODS ARRAY")
-    console.log(prodsArray)
+    //console.log("PRODS ARRAY")
+    //console.log(prodsArray)
     document.querySelector('#BAT').innerHTML = category.toUpperCase()
 
-    showCardsData(prodsArray)
+    paginateData(prodsArray)
 }
 
