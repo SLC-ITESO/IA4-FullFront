@@ -18,7 +18,31 @@ async function loadData(){
     console.log(data);
     sessionStorage.setItem('products', JSON.stringify(data))
     prodsArray=data;
+    updateCategories(data)
     showCardsData(data)
+}
+
+function updateCategories(data){
+    let categories = data.map(prod => prod.category);
+    //Investigando en stack overflow, se encontro la manera de eliminar
+    //los duplicados de un array, se utiliza el new Set y se convierte
+    //nuevamente a un array, los tres puntos son para
+    //que el array no se convierta en un array de arrays
+
+    categories = [...new Set(categories)];
+    //console.log("CATEGORIES")
+    console.log(categories)
+    document.querySelector('#dropdownCat').innerHTML =
+        categories.map((c) => `
+    <li><a class="dropdown-item" onclick="asignaTipo('${c}')" href="categ.html">${c}</a></li>
+    <li><hr class="dropdown-divider"></li>
+    `).join("");
+}
+
+function asignaTipo(categoria){
+    console.log(categoria);
+    console.log(typeof(categoria));
+    sessionStorage.setItem('categoria', categoria);
 }
 
 function showCardsData(prodsArray) {
