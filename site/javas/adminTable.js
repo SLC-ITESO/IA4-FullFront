@@ -43,17 +43,18 @@ async function editProduct(uuid){
     modal.show();
 }
 
-async function confirmAdd(){
-    let newData = {
+async function confirmItemAdd(){
+    let newProd = {
         imageUrl: document.getElementById('addImage').value,
         name: document.getElementById('addName').value,
         description: document.getElementById('addDesc').value,
-        stock: document.getElementById('addStock').value,
-        pricePerUnit: document.getElementById('addPPP').value,
+        stock: parseInt(document.getElementById('addStock').value),
+        pricePerUnit: parseFloat(document.getElementById('addPPP').value),
         category: document.getElementById('addCat').value,
         unit: document.getElementById('addUnit').value
     }
-    //console.log("confirmEdit UUID:")
+    console.log(newProd)
+
     let link = 'https://products-dasw.onrender.com/api/products';
     let resp = await fetch(link,{
         method : 'POST',
@@ -62,22 +63,22 @@ async function confirmAdd(){
             'x-auth': 'admin',
             'Content-type':'Application/json'
         },
-        body: JSON.stringify(newData)
+        body: JSON.stringify(newProd)
 
     }).catch(err => {
         swal("Error adding the product!", err, "error");
-
     });
     let data = await resp.json();
     console.log("DATA")
     console.log(data)
     swal("Product Added", "" , "success");
-    //put the new data in the products array
+    //add the new product to the array
     let prods = JSON.parse(sessionStorage.getItem('products'));
     prods.push(data);
     sessionStorage.setItem('products', JSON.stringify(prods));
-    //reloads the page
+    //reloads
     showProductAdminTable();
+
 }
 
 async function confirmEdit(uuid){
@@ -155,3 +156,43 @@ async function confirmDelete(uuid){
 
 }
 
+async function filterByQueries(){
+    let prods = JSON.parse(sessionStorage.getItem('products'));
+
+    let filter = document.getElementById('filterInp').value;
+    let minPPU = document.getElementById('minInp').value;
+    let maxPPU = document.getElementById('maxInp').value;
+
+    if(minPPU == ''){
+        minPPU = 0;
+    }
+    if(maxPPU == ''){
+        maxPPU = 1000000;
+    }
+    if(filter == ''){
+        filter = '.*';
+    }
+    console.log(filter);
+    console.log(minPPU);
+    console.log(maxPPU);
+
+    let filtered = prods.filter(p => p.name.match(filter) && p.pricePerUnit >= minPPU && p.pricePerUnit <= maxPPU);
+
+    document.querySelector('#adminTable').innerHTML = filtered.map((p) => `
+    <tr uuidRow="${p.uuid}">
+        <td><img src="${p.imageUrl}" alt="Image"></td>
+        <td>${p.uuid}</td>
+        <td>${p.name}</td>
+        <td>${p.description}</td>
+        <td>${p.stock}</td>
+        <td>$${p.pricePerUnit}</td>
+        <td>${p.category}</td>
+        <td>${p.unit}</td>
+        <td>
+            <a class="btn btn-outline-secondary" onclick="editProduct('${p.uuid}')"><i class="bi bi-pencil-square"></i></a>
+            <a class="btn btn-outline-danger" onclick="delProduct('${p.uuid}')"><i class="bi bi-trash3"></i></a>
+        </td>
+    </tr>
+    `).join('');
+
+}

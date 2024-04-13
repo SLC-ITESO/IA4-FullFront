@@ -18,6 +18,6 @@ x-auth: admin
 }
 
 ###
-GET  {{host}}/api/products
+GET  {{host}}/api/products?category=melee&name=k
 x-expediente:{{expediente}}
 x-auth: admin

@@ -189,12 +189,17 @@ async function updateAmount(uuid){
     console.log(prods);
     let prodData = prods.find(p => p.uuid == uuid);
 
-
+    if (amount == 0){
+        console.log('confirm delete');
+        deleteItem(uuid);
+        return;
+    }
     if(amount > prodData.stock || amount <= 0 || isNaN(amount)){
         swal("Bad stock!", "", "error");
         loadCartData();
         throw new Error("Invalid amount");
     }
+
 
     let body = {amount}
     let resp = await fetch(link,{
