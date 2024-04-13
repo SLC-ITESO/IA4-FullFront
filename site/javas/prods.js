@@ -15,9 +15,6 @@ async function loadData(){
     //showCardsData(data)
 
 }
-function loadSeachedData(){
-
-}
 function paginateData(data){
     let itemPerPage = 4;
     let numPages = Math.ceil(data.length/itemPerPage);
@@ -57,10 +54,15 @@ document.getElementById('searchButton').addEventListener('click', function() {
     console.log(searchTerm);
     if(searchTerm){
         let prods = JSON.parse(sessionStorage.getItem('products'));
+
         let filteredProds = prods.filter(prod => prod.name.toLowerCase().includes(searchTerm.toLowerCase()));
         console.log("FILTERED PRODS");
         console.log(filteredProds);
-        paginateData(filteredProds, true);
+        if(filteredProds.length == 0){
+            swal("No products found!", "", "error");
+            return;
+        }
+        paginateData(filteredProds);
     }
     else{
         loadData()
